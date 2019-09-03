@@ -2,13 +2,28 @@ var http = require('http'),
     fs = require('fs'), 
     url = require('url'),
     port = 8080;
+    assert = require('assert')
 
 /* Global variables */
 var listingData, server;
 
+
 var requestHandler = function(request, response) {
   var parsedUrl = url.parse(request.url);
+  //console.log("Parsed URL is:" + parsedUrl.path);
 
+  if (parsedUrl.path == "/listings"){
+    response.end(listingData);
+  }
+  else {
+    response.statusCode = 404; //set status code to 404
+    /* Attempts of sending a Bad gateway error assertion
+    response.statusMessage = 'Bad gateway error';
+    assert.AssertionError.message = 'Bad gateway error';
+    response.message = 'bad gateway error';
+    */
+    response.end('Bad gateway error'); //display error in browser
+  }
   /*
     Your request handler should send listingData in the JSON format as a response if a GET request 
     is sent to the '/listings' path. Otherwise, it should send a 404 error. 
@@ -26,7 +41,21 @@ var requestHandler = function(request, response) {
    */
 };
 
+
+
+//console.log("Did we get here?");
+
 fs.readFile('listings.json', 'utf8', function(err, data) {
+  
+  //listingData = JSON.parse(data).entries[1].code;
+  listingData = data;
+  //console.error(err);
+  server = http.createServer(requestHandler);
+
+  server.listen(port, function(){
+    //something
+  });
+  //console.log("fs");
   /*
     This callback function should save the data in the listingData variable, 
     then start the server. 
@@ -49,3 +78,5 @@ fs.readFile('listings.json', 'utf8', function(err, data) {
 
 
 });
+
+

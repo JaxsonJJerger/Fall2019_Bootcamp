@@ -2,7 +2,7 @@ var http = require('http'),
     fs = require('fs'), 
     url = require('url'),
     port = 8080;
-    assert = require('assert')
+    //assert = require('assert')
 
 /* Global variables */
 var listingData, server;
@@ -47,14 +47,22 @@ var requestHandler = function(request, response) {
 
 fs.readFile('listings.json', 'utf8', function(err, data) {
   
-  //listingData = JSON.parse(data).entries[1].code;
-  listingData = data;
-  //console.error(err);
-  server = http.createServer(requestHandler);
+  try{
+    //listingData = JSON.parse(data).entries[1].code;
+    listingData = data;
+    //console.error(err);
+    if (err != null){
+      throw err;
+    }
+    server = http.createServer(requestHandler);
 
-  server.listen(port, function(){
-    //something
-  });
+    server.listen(port, function(){
+      //
+    });
+  }
+  catch (err) {
+    console.error(err);
+  }
   //console.log("fs");
   /*
     This callback function should save the data in the listingData variable, 

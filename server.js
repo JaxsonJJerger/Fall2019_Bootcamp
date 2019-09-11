@@ -12,7 +12,7 @@ var requestHandler = function(request, response) {
   var parsedUrl = url.parse(request.url);
   //console.log("Parsed URL is:" + parsedUrl.path);
 
-  if (parsedUrl.path == "/listings"){
+  if (parsedUrl.path == "/listings" && request.method == "GET"){
     response.end(listingData);
   }
   else {

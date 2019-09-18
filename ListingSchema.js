@@ -9,6 +9,14 @@ var mongoose = require('mongoose'),
 var listingSchema = new Schema({
   /* Your code for a schema here */ 
   //Check out - https://mongoosejs.com/docs/guide.html
+  code: String,
+  name: String,
+  coordinates: {
+    latitude: Number,
+    longitude: Number
+  },
+  address: String 
+
 
 });
 
@@ -17,6 +25,15 @@ var listingSchema = new Schema({
 */
 listingSchema.pre('save', function(next) {
   /* your code here */
+  if (!this.name || !this.code){
+    throw err;
+  }
+  var currentDate = new Date();
+  this.updated_at = currentDate;
+  if(!this.created_at)
+    this.created_at = currentDate;
+
+  next();
 });
 
 /* Use your schema to instantiate a Mongoose model */
